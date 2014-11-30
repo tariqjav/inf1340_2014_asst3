@@ -92,8 +92,6 @@ def read_stock_data(stock_name, stock_file_name):
             # Keep what is previous date.
             prev_date = stock_date
 
-            # once it is fixed, do a comparison... adding the 7th element...look into all the 6 and compare if they are bigger than that,
-            # get the smallest one out
             # Creating a list for best six months
             best_six = []
             # Creating a tuple which will have the stock date and average
@@ -107,14 +105,20 @@ def read_stock_data(stock_name, stock_file_name):
             else:
                 # for the six tuples already in the list:
                 for t in best_six:
-                    comparison = t[0:7][1]
-                    print(comparison)
+                    # the average of the existing tuples in the best_six list
+                    existing_six = []
+                    existing_six = t[0:7][1]
+                    # if the average in the existing tuples in the best_six list are less than the new tuple we are adding:
+                    if date_and_avg < existing_six:
+                        # Take the smallest one out:
+
+                        # And append the new tuple to best_six
+                        best_six.append(date_and_avg)
+                    else:
+                        return
                 return
 
-
-
-
-        print()
+        print(existing_six)
 
 
 def six_best_months():
