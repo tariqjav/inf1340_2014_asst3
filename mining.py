@@ -86,7 +86,7 @@ def read_stock_data(stock_name, stock_file_name):
                 dict_elem[stock_date].append((closing_price, volume))
             else:
                 if prev_date in dict_elem:
-                    print((compute_avg(prev_date, dict_elem[prev_date])))
+                    ((compute_avg(prev_date, dict_elem[prev_date])))
                 dict_elem[stock_date] = [(closing_price, volume)]
 
             # Keep what is previous date.
@@ -99,32 +99,36 @@ def read_stock_data(stock_name, stock_file_name):
                 #storing these tuples inside a list called monthly averages
                 monthly_averages.append(date_and_avg)
             # iterating through the monthly_averages list
-            for elem in monthly_averages:
+                for item in monthly_averages:
                 # Creating a list for best six months
-                best_six = []
+                    best_six = []
             # As long as the length is less than 6, append the date and average tuple into the list
-                if len(best_six) < 6:
-                    best_six.append(elem)
+
+                    best_six.append(item)
             # For every 7th element to add from the monthly average list, compare with six elements inside best six
-                else:
-                # for the six tuples already in the list:
-                    for t in best_six:
+                    if len(best_six) < 7:
+                        best_six.append(item)
+                    else:
+                    #for the six tuples already in the list:
+                        for t in best_six:
                     # the average of the existing tuples in the best_six list
-                        existing_six = []
-                        existing_six = t[0:7][1]
+                        #existing_six = []
+                        #existing_six = t[0:7][1]
                     # if the average in the existing tuples in the best_six list are less than the average of the new:
-                        if existing_six < elem[1]:
+                            if t[0:7][1] < item[1]:
                         # Remove the smallest average:
-                            min(existing_six).remove
+                                min(t).remove
                         # And append the new average to best_six
-                            best_six.append(elem)
-                        else:
+                                best_six.append(item)
+                            else:
+                            #best_six.
                         # Check the next tuple and keep repeating
-                            return
-                return print(best_six)
+                                return
+                #return print(best_six)
 
-        return
+        return print (best_six)
 
+    return
 
 def six_best_months():
     '''
