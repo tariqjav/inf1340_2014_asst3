@@ -23,7 +23,6 @@ total_volume = {}
 
 def compute_avg(data, list_close):
     '''
-
     :param data: month of the year
     :param list: list of tuple of (closing and volume)
     :return: average
@@ -35,6 +34,7 @@ def compute_avg(data, list_close):
         vol_total += key[1]
 
     return sum / vol_total
+
 
 def read_stock_data(stock_name, stock_file_name):
     '''
@@ -86,7 +86,7 @@ def read_stock_data(stock_name, stock_file_name):
                 dict_elem[stock_date].append((closing_price, volume))
             else:
                 if prev_date in dict_elem:
-                    (compute_avg(prev_date, dict_elem[prev_date]))
+                    print((compute_avg(prev_date, dict_elem[prev_date])))
                 dict_elem[stock_date] = [(closing_price, volume)]
 
             # Keep what is previous date.
@@ -95,7 +95,11 @@ def read_stock_data(stock_name, stock_file_name):
             # Creating a list for best six months
             best_six = []
             # Creating a tuple which will have the stock date and average
-            date_and_avg = (stock_date, compute_avg(prev_date, dict_elem[prev_date]))
+            for elem in dict_elem:
+                date_and_avg = ()
+                date_and_avg = (stock_date, compute_avg(stock_date, dict_elem[stock_date]))
+                # storing these tuples inside a list called monthly averages
+                monthly_averages.append(date_and_avg)
             # Storing the tuple date and average inside the best six list
             best_six = [(date_and_avg)]
             # As long as the length is less than 6, append the date and average into the list
@@ -119,13 +123,15 @@ def read_stock_data(stock_name, stock_file_name):
                         return
                 return
 
-        print()
+        print(dict_elem)
 
 
 def six_best_months():
     '''
     :return:
     '''
+
+
     return [('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0)]
 
 
