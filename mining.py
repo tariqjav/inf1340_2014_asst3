@@ -86,26 +86,35 @@ def read_stock_data(stock_name, stock_file_name):
                 dict_elem[stock_date].append((closing_price, volume))
             else:
                 if prev_date in dict_elem:
-                    print(compute_avg(prev_date, dict_elem[prev_date]))
+                    (compute_avg(prev_date, dict_elem[prev_date]))
                 dict_elem[stock_date] = [(closing_price, volume)]
 
             # Keep what is previous date.
             prev_date = stock_date
 
-            # creating a list - as long as the length is less than 6, append the avg and date as a tuple together to the list
             # once it is fixed, do a comparison... adding the 7th element...look into all the 6 and compare if they are bigger than that,
             # get the smallest one out
+            # Creating a list for best six months
             best_six = []
+            # Creating a tuple which will have the stock date and average
+            date_and_avg = (stock_date, compute_avg(prev_date, dict_elem[prev_date]))
+            # Storing the tuple date and average inside the best six list
+            best_six = [(date_and_avg)]
+            # As long as the length is less than 6, append the date and average into the list
             if len(best_six) < 6:
-                date_and_avg = (stock_date, compute_avg())
                 best_six.append(date_and_avg)
+            # For every 7th tuple of date_and_avg that will be added, compare the six tuples already there
             else:
-                
+                # for the six tuples already in the list:
+                for t in best_six:
+                    comparison = t[0:7][1]
+                    print(comparison)
+                return
 
 
 
 
-        print(dict_elem)
+        print()
 
 
 def six_best_months():
@@ -135,4 +144,4 @@ def read_json_from_file(file_name):
         stock_data = json.loads(file_contents)
     return stock_data
 
-read_stock_data("GOOG","data/GOOG.json")
+read_stock_data("GOOG", "data/GOOG.json")
