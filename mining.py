@@ -98,14 +98,14 @@ def read_stock_data(stock_name, stock_file_name):
                 date_and_avg = (stock_date, compute_avg(stock_date, dict_elem[stock_date]))
                 #storing these tuples inside a list called monthly averages
                 monthly_averages.append(date_and_avg)
-            # iterating through the monthly_averages
+            # iterating through the monthly_averages list
             for elem in monthly_averages:
                 # Creating a list for best six months
                 best_six = []
             # As long as the length is less than 6, append the date and average tuple into the list
                 if len(best_six) < 6:
                     best_six.append(elem)
-            # For every 7th tuple that will be added, compare the six tuples already there
+            # For every 7th element to add from the monthly average list, compare with six elements inside best six
                 else:
                 # for the six tuples already in the list:
                     for t in best_six:
@@ -113,17 +113,17 @@ def read_stock_data(stock_name, stock_file_name):
                         existing_six = []
                         existing_six = t[0:7][1]
                     # if the average in the existing tuples in the best_six list are less than the average of the new:
-                        if best_six.t[1] > existing_six:
+                        if existing_six < elem[1]:
                         # Remove the smallest average:
                             min(existing_six).remove
                         # And append the new average to best_six
                             best_six.append(elem)
-                    else:
+                        else:
                         # Check the next tuple and keep repeating
-                        return
-                return
+                            return
+                return print(best_six)
 
-        print(dict_elem)
+        return
 
 
 def six_best_months():
