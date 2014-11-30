@@ -98,7 +98,7 @@ def read_stock_data(stock_name, stock_file_name):
             for elem in dict_elem:
                 date_and_avg = ()
                 date_and_avg = (stock_date, compute_avg(stock_date, dict_elem[stock_date]))
-                # storing these tuples inside a list called monthly averages
+                #storing these tuples inside a list called monthly averages
                 monthly_averages.append(date_and_avg)
             # Storing the tuple date and average inside the best six list
             best_six = [(date_and_avg)]
