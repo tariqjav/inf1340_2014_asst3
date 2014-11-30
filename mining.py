@@ -111,19 +111,16 @@ def read_stock_data(stock_name, stock_file_name):
                     else:
                     #for the six tuples already in the list:
                         for t in best_six:
-                    # the average of the existing tuples in the best_six list
-                        #existing_six = []
-                        #existing_six = t[0:7][1]
                     # if the average in the existing tuples in the best_six list are less than the average of the new:
                             if t[0:7][1] < item[1]:
                         # Remove the smallest average:
                                 min(t).remove
-                        # And append the new average to best_six
+                        # And append the new average tuple to best_six
                                 best_six.append(item)
                             else:
-                            #best_six.
-                        # Check the next tuple and keep repeating
                                 return
+                        # Check the next tuple and keep repeating
+
                 #return print(best_six)
 
         return print (best_six)
