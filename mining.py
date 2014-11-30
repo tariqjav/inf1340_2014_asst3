@@ -92,6 +92,17 @@ def read_stock_data(stock_name, stock_file_name):
             # Keep what is previous date.
             prev_date = stock_date
 
+            # creating a list - as long as the length is less than 6, append the avg and date as a tuple together to the list
+            # once it is fixed, do a comparison... adding the 7th element...look into all the 6 and compare if they are bigger than that,
+            # get the smallest one out
+            best_six = []
+            if len(best_six) < 6:
+                date_and_avg = (stock_date, compute_avg())
+                best_six.append(date_and_avg)
+            else:
+                
+
+
 
 
         print(dict_elem)
