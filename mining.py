@@ -119,5 +119,3 @@ def read_json_from_file(file_name):
         stock_data = json.loads(file_contents)
     return stock_data
 
-
-read_stock_data("GOOG", "data/GOOG.json")

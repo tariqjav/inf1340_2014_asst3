@@ -2,7 +2,7 @@
 
 """ This will test the mining program """
 
-__author__ = 'Nazanin Tehrai & Javeria Tariq'
+__author__ = 'Nazanin Tehrani & Javeria Tariq'
 
 __license__ = "MIT License"
 
@@ -49,7 +49,3 @@ def test_file_name_type(file_name):
     # When file does not exist
     with pytest.raises(FileNotFoundError):
         read_stock_data("ABC", "data/ABC.json")
-
-
-
-
