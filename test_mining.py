@@ -34,8 +34,26 @@ def test_tse_so(best_six, worst_six):
 def test_file_name_type(file_name):
     assert file_name == "data/TSE-SO.json"
     assert file_name == "data/GOOG.json"
-    assert file_name == "data/fileABC.json"
-    
+
+    # When file name passed are string but name is not defined
+    with pytest.raises(NameError):
+        read_stock_data("GOOG", randomdatafile.json)
+    # When stock name passed are string but name is not defined
+    with pytest.raises(NameError):
+        read_stock_data(random, "data/TSE-SO.json")
+
+    # When stock name passed is not string
+    with pytest.raises(TypeError):
+        read_stock_data(1313232414, "data/GOOG.json")
+
+    # When file name passed is not string
+    with pytest.raises(TypeError):
+        read_stock_data("TSE-SO", 313213)
+
+    # When file does not exist
+    with pytest.raises(FileNotFoundError):
+        read_stock_data("ABC", "data/ABC.json")
+
 
 
 
