@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
-""" Docstring """
+""" This program will find out the monthly average of a stock over a period of time.
+It will provide the user with the best six months and the worst six months of the particular stock. """
 
-__author__ = 'Susan Sim'
-__email__ = "ses@drsusansim.org"
+__author__ = 'Nazanin Tehrani & Javeria Tariq'
 
-__copyright__ = "2014 Susan Sim"
 __license__ = "MIT License"
 
 __status__ = "Prototype"
@@ -43,10 +42,11 @@ def read_stock_data(stock_name, stock_file_name):
     """
     # Check Types of arguments passed in
     if not type(stock_name) is str:
-        raise TypeError("Type Error: Please Pass in stock name in string")
+        raise TypeError("Type Error: Please Pass stock name in string")
 
     if not type(stock_file_name) is str:
-        raise TypeError("Type Error: Please Pass in stock file name in string")
+        raise TypeError("Type Error: Please Pass stock file name in string")
+
     # Create a list which will store the best six and worst six
     best_six = []
     worst_six = []
@@ -118,5 +118,6 @@ def read_json_from_file(file_name):
         # Storing the entire contents of the json file into a list variable
         stock_data = json.loads(file_contents)
     return stock_data
+
 
 read_stock_data("GOOG", "data/GOOG.json")
