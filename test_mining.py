@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 
-""" Docstring """
+""" This will test the mining program """
 
-__author__ = 'Susan Sim'
-__email__ = "ses@drsusansim.org"
+__author__ = 'Nazanin Tehrai & Javeria Tariq'
 
-__copyright__ = "2014 Susan Sim"
 __license__ = "MIT License"
 
 __status__ = "Prototype"
