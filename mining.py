@@ -53,6 +53,10 @@ def read_stock_data(stock_name, stock_file_name):
     if not type(stock_file_name) is str:
         raise TypeError("Type Error: Please Pass in stock file name in string")
 
+
+
+    best_six = []
+    worst_six = []
     #Telling python to read from the stock file
     with open(stock_file_name) as file_handle:
         file_contents = file_handle.read()
@@ -61,7 +65,6 @@ def read_stock_data(stock_name, stock_file_name):
         #Telling python to iterate through each dictionary in the data
         dict_elem = {}
         prev_date = 0
-        best_six = []
         for element in stock_data:
             #Telling python to get the date and strip it as month/year
             date_entry = element.get("Date")
@@ -102,6 +105,15 @@ def read_stock_data(stock_name, stock_file_name):
                             best_six.remove(top_avg[0])
                             best_six.append(((avg, stock_date)))
 
+                    if len(worst_six) < 6:
+                        worst_six.append((avg, stock_date))
+                    else:
+                        #for the six tuples already in the list:
+                        low_avg = sorted(worst_six)
+                        if avg < worst_six[5][0]:
+                            worst_six.remove(low_avg[5])
+                            worst_six.append(((avg, stock_date)))
+
 
                 dict_elem[stock_date] = [(closing_price, volume)]
 
@@ -109,7 +121,8 @@ def read_stock_data(stock_name, stock_file_name):
             prev_date = stock_date
 
 
-            print(best_six)
+    print(best_six)
+    print(worst_six)
 
     return
 
