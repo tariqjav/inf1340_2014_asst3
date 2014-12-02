@@ -75,7 +75,6 @@ def read_stock_data(stock_name, stock_file_name):
             #Get the volume and the closing price
             volume = element.get("Volume")
             closing_price = element.get("Close")
-            print(stock_date)
             dict_all[date_entry] = round(closing_price,2)
             # Compare if the date of the element just read is the same as the previous date. Are they in the same month?
             # element date or not, if not, we can compute the average now as we have read the data
@@ -146,12 +145,10 @@ def read_stock_data(stock_name, stock_file_name):
                             worst_six.append((avg, prev_date))
 
 
-    print(dict_elem)
     global best_6, worst_6, avg_data, dict_overall
     best_6 = best_six
     worst_6 = worst_six
     avg_data = avg_
-    print("avg,", avg_data)
     dict_overall = dict_all
     return
 
@@ -159,13 +156,33 @@ def read_stock_data(stock_name, stock_file_name):
 def compare_two_avg(date1, date2):
     '''
 
-    :param date1:
-    :param date2:
-    :return:
+    :param date1: date1
+    :param date2: date2
+    :return: 1 if standard deviation of 1 is bigger; 2 otherwise
     '''
-    num_1 = dict_overall[date1]
-    num_2 = dict_overall[date2]
 
+    # Check for data types and ensure date1 is string
+    if not type(date1) is str:
+        raise TypeError("Type Error: Please Pass date name in string")
+
+    # Check for data types and ensure date2 is string
+    if not type(date2) is str:
+        raise TypeError("Type Error: Please Pass date name in string")
+
+    # Check for date1 value and raise an error if it does not exists
+    if date1 in dict_overall:
+        num_1 = dict_overall[date1]
+    else:
+        raise ValueError("Value Error: Please Pass valid date string")
+
+    # Check for date1 value and raise an error if it does not exists
+    if date2 in dict_overall:
+        num_2 = dict_overall[date2]
+    else:
+        raise ValueError("Value Error: Please Pass valid date string")
+
+
+    # Compute Standard Deviation -
     parse_date = datetime.datetime.strptime(date1,"%Y-%m-%d")
     stock_date_1 = datetime.datetime.strftime(parse_date,"%m-%Y")
 
@@ -177,9 +194,9 @@ def compare_two_avg(date1, date2):
     std_num_2 = (num_2 - avg_data[stock_date_2]) * (num_2 - avg_data[stock_date_2])
 
     if std_num_1 > stock_date_2:
-        return 2
-    else:
         return 1
+    else:
+        return 2
 
 def set_best(best_):
     '''
@@ -226,10 +243,6 @@ def read_json_from_file(file_name):
         # Storing the entire contents of the json file into a list variable
         stock_data = json.loads(file_contents)
     return stock_data
-
-read_stock_data("GOOG", "data/GOOG.json")
-print(compare_two_avg('2004-08-23', '2004-08-20'))
-
 
 
 
