@@ -14,9 +14,11 @@ import json
 import csv
 import datetime
 
-
+best_6 = []
+worst_6 = []
 stock_data = []
-
+avg_data = {}
+dict_overall = {}
 
 def compute_avg(data, list_close):
     """
@@ -30,7 +32,7 @@ def compute_avg(data, list_close):
         total += key[0] * key[1]
         vol_total += key[1]
 
-    return total / vol_total
+    return round(total / vol_total,2)
 
 
 def read_stock_data(stock_name, stock_file_name):
@@ -40,6 +42,11 @@ def read_stock_data(stock_name, stock_file_name):
     :param stock_file_name: The name of the file holding the stock values
     :return:
     """
+
+    avg_ = {}
+    dict_all = {}
+    best_six = []
+    worst_six = []
     # Check Types of arguments passed in
     if not type(stock_name) is str:
         raise TypeError("Type Error: Please Pass stock name in string")
@@ -47,9 +54,9 @@ def read_stock_data(stock_name, stock_file_name):
     if not type(stock_file_name) is str:
         raise TypeError("Type Error: Please Pass stock file name in string")
 
+
     # Create a list which will store the best six and worst six
-    best_six = []
-    worst_six = []
+
     # Read from the stock file
     with open(stock_file_name) as file_handle:
         file_contents = file_handle.read()
@@ -64,10 +71,12 @@ def read_stock_data(stock_name, stock_file_name):
             parse_date = datetime.datetime.strptime(date_entry,"%Y-%m-%d")
             stock_date = datetime.datetime.strftime(parse_date,"%m-%Y")
 
+
             #Get the volume and the closing price
             volume = element.get("Volume")
             closing_price = element.get("Close")
-
+            print(stock_date)
+            dict_all[date_entry] = round(closing_price,2)
             # Compare if the date of the element just read is the same as the previous date. Are they in the same month?
             # element date or not, if not, we can compute the average now as we have read the data
             # for all the month.
@@ -79,34 +88,133 @@ def read_stock_data(stock_name, stock_file_name):
                     # Creating a tuple which will have the stock date and average
                     # As long as the length is less than 6, append the date and average tuple into the list
                     # For every 7th element to add from the monthly average list, compare with six elements
-                    # Inside best six and worst six
+                    # If smaller than worst cases or larger than best cases then we need to insert it into
+                    # corresponding array.
+                    avg_[prev_date] = avg
+                    if prev_date == 0:
+                        best_six = []
                     if len(best_six) < 6:
-                        best_six.append((avg, stock_date))
+                        best_six.append((avg, prev_date))
                     else:
                         #for the six tuples already in the list:
                         top_avg = sorted(best_six)
                         if avg > top_avg[0][0]:
                             best_six.remove(top_avg[0])
-                            best_six.append((avg, stock_date))
+                            best_six.append((avg, prev_date))
 
                     if len(worst_six) < 6:
-                        worst_six.append((avg, stock_date))
+                        worst_six.append((avg, prev_date))
                     else:
                         #for the six tuples already in the list:
                         low_avg = sorted(worst_six)
-                        if avg < worst_six[5][0]:
+                        if avg < low_avg[5][0]:
                             worst_six.remove(low_avg[5])
-                            worst_six.append((avg, stock_date))
+                            worst_six.append((avg, prev_date))
+
+
                 dict_elem[stock_date] = [(closing_price, volume)]
 
             # Keep what is previous date.
             prev_date = stock_date
 
-    print(best_six)
-    print(worst_six)
+    if prev_date in dict_elem:
+                    avg = compute_avg(prev_date, dict_elem[prev_date])
+                    # Creating a tuple which will have the stock date and average
+                    # As long as the length is less than 6, append the date and average tuple into the list
+                    # For every 7th element to add from the monthly average list, compare with six elements
+                    # If smaller than worst cases or larger than best cases then we need to insert it into
+                    # corresponding array.
+                    avg_[prev_date] = avg
+                    if prev_date == 0:
+                        best_six = []
+                    if len(best_six) < 6:
+                        best_six.append((avg, prev_date))
+                    else:
+                        #for the six tuples already in the list:
+                        top_avg = sorted(best_six)
+                        if avg > top_avg[0][0]:
+                            best_six.remove(top_avg[0])
+                            best_six.append((avg, prev_date))
 
+                    if len(worst_six) < 6:
+                        worst_six.append((avg, prev_date))
+                    else:
+                        #for the six tuples already in the list:
+                        low_avg = sorted(worst_six)
+                        if avg < low_avg[5][0]:
+                            worst_six.remove(low_avg[5])
+                            worst_six.append((avg, prev_date))
+
+
+    print(dict_elem)
+    global best_6, worst_6, avg_data, dict_overall
+    best_6 = best_six
+    worst_6 = worst_six
+    avg_data = avg_
+    print("avg,", avg_data)
+    dict_overall = dict_all
     return
 
+
+def compare_two_avg(date1, date2):
+    '''
+
+    :param date1:
+    :param date2:
+    :return:
+    '''
+    num_1 = dict_overall[date1]
+    num_2 = dict_overall[date2]
+
+    parse_date = datetime.datetime.strptime(date1,"%Y-%m-%d")
+    stock_date_1 = datetime.datetime.strftime(parse_date,"%m-%Y")
+
+    std_num_1 = (num_1 - avg_data[stock_date_1]) * (num_1 - avg_data[stock_date_1])
+
+    parse_date = datetime.datetime.strptime(date2,"%Y-%m-%d")
+    stock_date_2 = datetime.datetime.strftime(parse_date,"%m-%Y")
+
+    std_num_2 = (num_2 - avg_data[stock_date_2]) * (num_2 - avg_data[stock_date_2])
+
+    if std_num_1 > stock_date_2:
+        return 2
+    else:
+        return 1
+
+def set_best(best_):
+    '''
+
+    :param best_: local best_ is used to set the value to global best_6 variable
+    :return: does not return anything
+    '''
+    global best_6
+    best_6 = best_
+    print(best_6)
+
+
+def set_worst(worst_):
+    '''
+
+    :param worst_: local worst_ is used to set the value to global worst_6 variable
+    :return: does not return anything
+    '''
+    global worst_6
+    worst_6 = worst_
+
+
+def six_best_months():
+    '''
+    get function to return the value of global best_6 variable
+    :return: best_6
+    '''
+    return sorted(best_6, reverse=True)
+
+def six_worst_months():
+    '''
+    get function to return the value of global worst_6 variable
+    :return: worst_6
+    '''
+    return sorted(worst_6)
 
 def read_json_from_file(file_name):
     """
@@ -118,4 +226,10 @@ def read_json_from_file(file_name):
         # Storing the entire contents of the json file into a list variable
         stock_data = json.loads(file_contents)
     return stock_data
+
+read_stock_data("GOOG", "data/GOOG.json")
+print(compare_two_avg('2004-08-23', '2004-08-20'))
+
+
+
 

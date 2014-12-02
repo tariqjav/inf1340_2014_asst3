@@ -14,29 +14,24 @@ from mining import *
 import pytest
 
 
-def test_basic(best_six, worst_six):
+def test_basic_GOOG():
     read_stock_data("GOOG", "data/GOOG.json")
-    assert best_six == [(693.76, '12-2007'), (676.55,'11-2007'), (637.38, '10-2007'), (599.42, '01-2008'),
-                                 (576.29, '05-2008'), (555.34, '06-2008')]
-    assert worst_six == [(116.38, '09-2004'), (164.52, '10-2004'), (177.09, '11-2004'), (181.01, '12-2004'),
-                                  (181.18, '03-2005'), (192.96, '01-2005')]
+    assert six_best_months()  == sorted([(693.76, '12-2007'), (676.55,'11-2007'), (637.38, '10-2007'), (599.42, '01-2008'), (576.29, '05-2008'), (555.34, '06-2008')], reverse=True)
+    assert six_worst_months()  == [(116.38, '09-2004'), (164.52, '10-2004'), (177.09, '11-2004'), (181.01, '12-2004'), (181.18, '03-2005'), (192.96, '01-2005')]
+
+
+def test_basic_TSE():
     read_stock_data("TSE-SO", "data/TSE-SO.json")
-    assert best_six == [(17.99, '12-2004'), (20.81,'04-2007'), (18.33, '11-2008'), (19.42, '04-2009'),
-                                 (21.76, '05-2013'), (17.8, '06-2009')]
-    assert worst_six == [(6.45, '11-2004'), (9.44, '12-2007'), (11.31, '01-2008'), (4.09, '05-2013'),
-                                  (10.48, '06-2013'), (1.89, '12-2009')]
+    assert six_best_months() == sorted([(20.98, '12-2007'), (20.89, '11-2007'), (19.96, '05-2013'), (19.65, '04-2013'), (19.11, '10-2007'), (18.93, '02-2008')], reverse=True)
+    assert six_worst_months() == sorted([(1.74, '03-2009'), (2.08, '11-2008'), (2.25, '12-2008'), (2.41, '02-2009'), (2.75, '04-2009'), (3.14, '01-2009')])
 
 
-def test_file_name_type(file_name):
-    assert file_name == "data/TSE-SO.json"
-    assert file_name == "data/GOOG.json"
+def test_file_name_type():
 
     # When file name passed are string but name is not defined
-    with pytest.raises(NameError):
-        read_stock_data("GOOG", randomdatafile.json)
-    # When stock name passed are string but name is not defined
-    with pytest.raises(NameError):
-        read_stock_data(random, "data/TSE-SO.json")
+    with pytest.raises(IOError):
+        read_stock_data("GOOG", "randomdatafile.json")
+
 
     # When stock name passed is not string
     with pytest.raises(TypeError):
@@ -47,5 +42,10 @@ def test_file_name_type(file_name):
         read_stock_data("TSE-SO", 313213)
 
     # When file does not exist
-    with pytest.raises(FileNotFoundError):
+    with pytest.raises(IOError):
         read_stock_data("ABC", "data/ABC.json")
+
+
+test_basic_GOOG()
+test_basic_TSE()
+test_file_name_type()
