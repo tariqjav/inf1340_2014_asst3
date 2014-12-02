@@ -31,8 +31,8 @@ def test_basic_GOOG():
     # and ascending (in case of worst)
 
     # We were confused what format to use for the dates in the tuple, we stick to what we have in the JSON, which is
-    # the delimiter of '-' between month and year.
-
+    # the delimiter of '-' between month and year and we also had avg first in the tuple to be able to sort it based on
+    # avg.
 
     read_stock_data("GOOG", "data/GOOG.json")
     assert six_best_months()  == sorted([(693.76, '12-2007'), (676.55,'11-2007'), (637.38, '10-2007'), (599.42, '01-2008'), (576.29, '05-2008'), (555.34, '06-2008')], reverse=True)
